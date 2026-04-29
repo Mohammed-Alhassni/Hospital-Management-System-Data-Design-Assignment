@@ -93,3 +93,52 @@ CREATE TABLE Service
 	constraint fk_ser_cate
 		FOREIGN KEY (categiory_id) references Category_Service(categiory_id)
 )
+
+
+CREATE TABLE Appointment_Service 
+(
+	appointment_id int,
+	service_id int,
+	quantity int,
+	unit_price_at_time dec,
+	constraint fk_appSer_app
+		FOREIGN KEY (appointment_id) references Appointment(appointment_id),
+	constraint fk_appSer_ser
+		FOREIGN KEY (service_id) references Service(service_id)
+)
+
+CREATE TABLE Billing 
+(
+	bill_id int PRIMARY KEY,
+	appointment_id int,
+	total_amount dec,
+	insurance_covered dec,
+	remaining_amount dec,
+	payment_status varchar,
+	payment_date date
+	constraint fk_bil_app
+		FOREIGN KEY (appointment_id) references Appointment(appointment_id)
+)
+
+CREATE TABLE Payment 
+(
+	payment_id int PRIMARY KEY,
+	bill_id int,
+	payment_method varchar,
+	amount_paid dec,
+	paid_at date,
+	constraint fk_pay_bil
+		FOREIGN KEY (bill_id) references Billing(bill_id)
+)
+
+CREATE TABLE Insurance 
+(
+	insurance_id int PRIMARY KEY,
+	patient_id int,
+	provider_name varchar,
+	policy_number varchar,
+	coverage_limit dec,
+	expiry_date date,
+	constraint fk_Insur_Pat
+		FOREIGN KEY (patient_id) references Patient(patient_id)
+)
